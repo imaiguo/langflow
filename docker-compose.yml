@@ -1,0 +1,10 @@
+services:
+  langflow:
+    image: langflowai/langflow:1.4.3
+    container_name: langflow
+    restart: always
+    environment:
+      - TX=Asia/Shanghai
+      - LANG=C.UTF-8
+    ports:
+      - 7860:7860
