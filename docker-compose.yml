@@ -3,8 +3,25 @@ services:
     image: langflowai/langflow:1.4.3
     container_name: langflow
     restart: always
+    depends_on:
+      - postgres
     environment:
-      - TX=Asia/Shanghai
+      - TZ=Asia/Shanghai
       - LANG=C.UTF-8
+      - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow
+      # This variable defines where the logs, file storage, monitor data and secret keys are stored.
+      - LANGFLOW_CONFIG_DIR=app/langflow
     ports:
       - 7860:7860
+    volumes:
+      - ./langflowData:/app/langflow
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: langflow
+      POSTGRES_PASSWORD: langflow
+      POSTGRES_DB: langflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./langflowPostgres:/var/lib/postgresql/data
